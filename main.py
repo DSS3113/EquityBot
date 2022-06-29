@@ -22,6 +22,9 @@ headers = {
 bot = commands.Bot(command_prefix = '!')
 bot.remove_command("help") # Because we are making a custom help command
 
+"""
+Returns True if the provided argument is a decimal/float.
+"""
 def is_decimal(s):
     try:
         float(s)
@@ -29,6 +32,10 @@ def is_decimal(s):
         return False
     return True
 
+
+"""
+Gets the price of the specified stock(s). Example: !price AAPL AMZN
+"""
 @bot.command()
 async def price(ctx, *stock_symbols):
     price_list = []
@@ -73,6 +80,9 @@ async def price(ctx, *stock_symbols):
     await ctx.send(content='\n'.join(price_list))
     await price_message.delete()
 
+"""
+Gets the chart for the specified stock(s) with the provided options. Example: !chart AAPL 5h wide macd
+"""
 @bot.command()
 async def chart(ctx, *args): 
     interval_keys = [
@@ -126,15 +136,18 @@ async def chart(ctx, *args):
     for i in args:
         if i in interval_keys:
             interval_key = i
+
         # Checking if the user put something like "4hr" instead of just "4h"
         elif i[:-1] in interval_keys:
             interval_key = i[:-1]
+
         # Checking if the user put something like "5min" instead of just "5m" or "5"
         elif i[:-2] in interval_keys:
             interval_key = i[:-2]
         if i in studies_keys:
             selected_studies.append('"' + studies_map[i] + '"')
-    # Overwriting html file to get desired chart
+
+    # Overwriting html file to get the desired chart
     html_file = open('chart.html', 'w')
     html_file.write(f"""<div id="ccchart-container" style="width:{'1280' if 'wide' in args else '720'}px; height: 600px; position:relative; top:-50px; left:-10px;">
     <div class="tradingview-widget-container">
@@ -164,6 +177,7 @@ async def chart(ctx, *args):
     </div>
 </div>""")
     html_file.close()
+
     while True:
         try:
             if len(args) < 2:
@@ -507,11 +521,18 @@ async def news(ctx, *args):
         print(err)
         await ctx.reply('Invalid argument(s). Check `!help` to see how to use the news command.')        
 
+"""
+You can use this command in four ways:
+1. Use it to create a new watchlist. Example: !wlist new AAPL AMZN
+2. Use it to add symbols to a pre-existing watchlist (if they aren't already present). Example: !wlist edit+ TSLA GOOGL
+3. Use it to remove symbols from a pre-existing watchlist (if they are present). Example: !wlist edit- TSLA GOOGL
+4. Use it to get the price of all the symbols in the watchlist. Example: !wlist call 
+"""
 @bot.command()
 async def wlist(ctx, *args):
     conn = psycopg2.connect(
         database="bot_db", 
-        user='dss', 
+        user=os.getenv('DB_USER'), 
         password=os.getenv('DB_PW'),
         host='127.0.0.1', 
         port= '5432'
@@ -519,7 +540,10 @@ async def wlist(ctx, *args):
     cursor = conn.cursor()
 
     match args[0]:
+
         case 'new':
+
+            # Create table if it doesn't exist already 
             cursor.execute('''CREATE TABLE IF NOT EXISTS WATCHLIST(
                 PK BIGSERIAL PRIMARY KEY,
                 USER_ID VARCHAR(45) UNIQUE,
@@ -527,134 +551,188 @@ async def wlist(ctx, *args):
             );''')
             user_id = ctx.message.author.id
             stock_symbols = args[1:]
-
             watchlist = []
             invalid_symbols = []
 
             for stock_symbol in stock_symbols:
-                # Check if symbols are already in the watchlist
+
+                # Check if symbol is already in the watchlist
                 if stock_symbol in watchlist:
                     continue
+
                 # Check if the symbols are valid
                 url = yahoo_fin+stock_symbol
                 response = requests.get(url, headers=headers)
                 soup = BeautifulSoup(response.content, 'html5lib')
                 try:
                     soup.find('h1', { 'class': 'D(ib) Fz(18px)' })
-                    watchlist.append(stock_symbol.upper())
+                    watchlist.append(stock_symbol.strip().upper())
                 except AttributeError:
                     invalid_symbols.append(stock_symbol)
-            watchlist_str = ' '.join(watchlist)
+
+            watchlist_str = ' '.join(watchlist).strip()
             invalid_symbols_str = " ".join(invalid_symbols)
-            cursor.execute("INSERT INTO WATCHLIST(USER_ID, SYMBOLS) VALUES('%s', %s) ON CONFLICT(USER_ID) DO UPDATE SET SYMBOLS = %s;", (user_id, watchlist_str, watchlist_str))
+            
+            cursor.execute("INSERT INTO WATCHLIST(USER_ID, SYMBOLS) VALUES('%s', %s) ON CONFLICT (USER_ID) DO UPDATE SET SYMBOLS = %s;", (user_id, watchlist_str, watchlist_str))
+            
             if len(invalid_symbols) > 0:
                 await ctx.send(f'''Watchlist set: `{watchlist_str}` for {ctx.message.author.mention}.
 *The following symbols will not be added to your watchlist because they are invalid*: {invalid_symbols_str}'''      
                 )
             else:
                 await ctx.send(f'Watchlist set: `{watchlist_str}` for {ctx.message.author.mention}.')
+            
             conn.commit()
             conn.close()
 
         case 'edit+':
-            user_id = ctx.message.author.id
-            stock_symbols = args[1:]
-            invalid_symbols = []
-            cursor.execute("SELECT SYMBOLS FROM WATCHLIST WHERE USER_ID='%s';", (user_id,))
-            old_watchlist_str = cursor.fetchone()[0]
-            new_watchlist = old_watchlist_str.split(' ')
 
-            for stock_symbol in stock_symbols:
-                # Check if symbols are already in the watchlist
-                if stock_symbol in new_watchlist:
-                    continue
-                # Check if the symbols are valid
-                url = yahoo_fin+stock_symbol
-                response = requests.get(url, headers=headers)
-                soup = BeautifulSoup(response.content, 'html5lib')
+            # Check if table exists 
+            cursor.execute("SELECT EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME=%s)", ('watchlist',))
+            if cursor.fetchone()[0]:
+                user_id = ctx.message.author.id
+                stock_symbols = args[1:]
+                invalid_symbols = []
+                cursor.execute("SELECT SYMBOLS FROM WATCHLIST WHERE USER_ID='%s';", (user_id,))
+
+                # Check if user had previously made a watchlist
                 try:
-                    soup.find('h1', { 'class': 'D(ib) Fz(18px)' })
-                    new_watchlist.append(stock_symbol.upper())
-                except AttributeError:
-                    invalid_symbols.append(stock_symbol)
-            new_watchlist_str = ' '.join(new_watchlist)
-            invalid_symbols_str = " ".join(invalid_symbols)
-            cursor.execute("UPDATE WATCHLIST SET SYMBOLS=%s WHERE USER_ID='%s';", (new_watchlist_str, user_id))
-            if len(invalid_symbols) > 0:
-                await ctx.send(f'''Watchlist set: `{new_watchlist_str}` for {ctx.message.author.mention}.
-*The following symbols will not be added to your watchlist because they are invalid*: {invalid_symbols_str}'''      
-                )
+
+                    old_watchlist_str = cursor.fetchone()[0]
+                    new_watchlist = old_watchlist_str.split(' ')
+
+                    for stock_symbol in stock_symbols:
+
+                        # Check if symbol is already in the watchlist
+                        if stock_symbol in new_watchlist:
+                            continue
+
+                        # Check if the symbols are valid
+                        url = yahoo_fin+stock_symbol
+                        response = requests.get(url, headers=headers)
+                        soup = BeautifulSoup(response.content, 'html5lib')
+                        try:
+                            soup.find('h1', { 'class': 'D(ib) Fz(18px)' })
+                            new_watchlist.append(stock_symbol.upper())
+                        except AttributeError:
+                            invalid_symbols.append(stock_symbol)
+
+                    new_watchlist_str = ' '.join(new_watchlist).strip()
+                    invalid_symbols_str = " ".join(invalid_symbols)
+
+                    cursor.execute("UPDATE WATCHLIST SET SYMBOLS=%s WHERE USER_ID='%s';", (new_watchlist_str, user_id))
+                    
+                    if len(invalid_symbols) > 0:
+                        await ctx.send(f'''Watchlist set: `{new_watchlist_str}` for {ctx.message.author.mention}.
+        *The following symbols will not be added to your watchlist because they are invalid*: {invalid_symbols_str}'''      
+                        )
+                    else:
+                        await ctx.send(f'Watchlist set: `{new_watchlist_str}` for {ctx.message.author.mention}.')
+                    
+                    conn.commit()
+                
+                except TypeError:
+                    await ctx.send("Your watchlist doesn't exist yet! Create one using the `!wlist new <symbol_list>` command.")
+            
             else:
-                await ctx.send(f'Watchlist set: `{new_watchlist_str}` for {ctx.message.author.mention}.')
-            conn.commit()
+                await ctx.send("Your watchlist doesn't exist yet! Create one using the `!wlist new <symbol_list>` command.")
+            
             conn.close()
 
         case 'edit-':
-            user_id = ctx.message.author.id
-            symbols_to_remove = args[1:]
-            cursor.execute("SELECT SYMBOLS FROM WATCHLIST WHERE USER_ID='%s';", (user_id,))
-            watchlist = cursor.fetchone()[0].split(' ')
-            new_watchlist = []
-            for symbol in watchlist:
-                if symbol not in symbols_to_remove:
-                    new_watchlist.append(symbol)
-            new_watchlist_str = ' '.join(new_watchlist)
-            cursor.execute("UPDATE WATCHLIST SET SYMBOLS=%s WHERE USER_ID='%s';", (new_watchlist_str, user_id))
-            await ctx.send(f'Watchlist set: `{new_watchlist_str}` for {ctx.message.author.mention}.')
-            conn.commit()
+
+            # Check if table exists 
+            cursor.execute("SELECT EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME=%s)", ('watchlist',))
+            if cursor.fetchone()[0]:
+
+                user_id = ctx.message.author.id
+                symbols_to_remove = args[1:]
+                cursor.execute("SELECT SYMBOLS FROM WATCHLIST WHERE USER_ID='%s';", (user_id,))
+
+                # Check if user had previously made a watchlist
+                try:
+                    watchlist = cursor.fetchone()[0].split(' ')
+                    new_watchlist = []
+                    for symbol in watchlist:
+                        if symbol not in symbols_to_remove:
+                            new_watchlist.append(symbol.upper())
+
+                    new_watchlist_str = ' '.join(new_watchlist).strip()
+                    
+                    cursor.execute("UPDATE WATCHLIST SET SYMBOLS=%s WHERE USER_ID='%s';", (new_watchlist_str, user_id))
+                    
+                    await ctx.send(f'Watchlist set: `{new_watchlist_str}` for {ctx.message.author.mention}.')
+                    
+                    conn.commit()
+                
+                except TypeError:
+                    await ctx.send("Your watchlist doesn't exist yet! Create one using the `!wlist new <symbol_list>` command.")
+            
+            else:
+                await ctx.send("Your watchlist doesn't exist yet! Create one using the `!wlist new <symbol_list>` command.")
+            
             conn.close()
 
         case 'call':
-            user_id = ctx.message.author.id
-            cursor.execute("SELECT SYMBOLS FROM WATCHLIST WHERE USER_ID = '%s';", (user_id,))
-            watchlist = cursor.fetchone()[0].split(' ')
-            price_list = []
-            price_message = await ctx.send(f'Fetching your watchlist...')
-            for stock_symbol in watchlist:
-                url = yahoo_fin+stock_symbol
-                response = requests.get(url, headers=headers)
-                soup = BeautifulSoup(response.content, 'html5lib')
-                stock_name = soup.find('h1', { 'class': 'D(ib) Fz(18px)' }).text
 
-                # Getting 'At Close' price
-                fin_streamers = soup.find('div', {'class': 'D(ib) Mend(20px)'}).findChildren('fin-streamer')
-                at_close = ''
-                for i in fin_streamers:
-                    at_close += i.text + ' '
-                at_close = at_close.strip()
+            # Check if table exists
+            cursor.execute("SELECT EXISTS(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME=%s)", ('watchlist',))
+            if cursor.fetchone()[0]:
+                user_id = ctx.message.author.id
+                cursor.execute("SELECT SYMBOLS FROM WATCHLIST WHERE USER_ID = '%s';", (user_id,))
+                
+                # Check if table exists
+                try:
+                    watchlist = cursor.fetchone()[0].split(' ')
+                    price_list = []
+                    price_message = await ctx.send(f'Fetching your watchlist...')
+                    for stock_symbol in watchlist:
+                        url = yahoo_fin+stock_symbol
+                        response = requests.get(url, headers=headers)
+                        soup = BeautifulSoup(response.content, 'html5lib')
+                        stock_name = soup.find('h1', { 'class': 'D(ib) Fz(18px)' }).text
 
-                # Getting 'After Hours' price
-                if soup.find('div', {'class': 'Fz(12px) C($tertiaryColor) My(0px) D(ib) Va(b)'}):
-                    fin_streamers = soup.find('div', {'class': 'Fz(12px) C($tertiaryColor) My(0px) D(ib) Va(b)'}).findChildren('fin-streamer')
-                    after_hours = ''
-                    for i in fin_streamers[0:4]:
-                        after_hours += i.text + ' '
-                    after_hours = after_hours.strip()
-                    price_list.append(
-                        f'''• **{stock_name}**
+                        # Getting 'At Close' price
+                        fin_streamers = soup.find('div', {'class': 'D(ib) Mend(20px)'}).findChildren('fin-streamer')
+                        at_close = ''
+                        for i in fin_streamers:
+                            at_close += i.text + ' '
+                        at_close = at_close.strip()
+
+                        # Getting 'After Hours' price
+                        if soup.find('div', {'class': 'Fz(12px) C($tertiaryColor) My(0px) D(ib) Va(b)'}):
+                            fin_streamers = soup.find('div', {'class': 'Fz(12px) C($tertiaryColor) My(0px) D(ib) Va(b)'}).findChildren('fin-streamer')
+                            after_hours = ''
+                            for i in fin_streamers[0:4]:
+                                after_hours += i.text + ' '
+                            after_hours = after_hours.strip()
+                            price_list.append(
+    f'''• **{stock_name}**
     At Close (4:00PM EDT):
     ***{at_close}***
     After Hours (07:59PM EDT):
     ***{after_hours}***'''
-                    )
-                else:
-                    price_list.append(
-                        f'''• **{stock_name}**
+                             )
+                        else:
+                            price_list.append(
+    f'''• **{stock_name}**
     At Close (4:00PM EDT):
     ***{at_close}***'''
-                    )
-        
-            await ctx.send(content='\n'.join(price_list))
-            await price_message.delete()
+                            )
+                    await ctx.send(content='\n'.join(price_list))
+                    await price_message.delete()
+                except TypeError:
+                    await ctx.send("Your watchlist doesn't exist yet! Create one using the `!wlist new <symbol_list>` command.")
+            else:
+                await ctx.send("Your watchlist doesn't exist yet! Create one using the `!wlist new <symbol_list>` command.")
+            conn.close()
+
         case _:
             await ctx.reply('Invalid argument(s). Check `!help` to see how to use the wlist command.')
-            conn.commit()
             conn.close()
-            return
 
 @bot.command()
 async def help(ctx, *args):
     await ctx.reply("Here's a link to a document that lists every command and how to use it: https://github.com/DSS3113/EquityBot/blob/master/readme.md")
 
-password = os.getenv('BOT_TOKEN')
-bot.run(password)
+bot.run(os.getenv('BOT_TOKEN'))
