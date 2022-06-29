@@ -17,7 +17,7 @@ Scrapes the price of the provided stock from Yahoo Finance.<p>
 ## Get charts
 #### Usage: `!chart <TradingView ticker(s)> <timeframe> <indicators> <other options>`
 #### Example: `!chart amzn 5h rsi macd wide`
-<p>Gets charts with provided specifications from TradingView. Although it does work with cryptocurrency pair to an extent, it is meant only for equity stocks listed on TradingView.</p>
+<p>Gets charts with provided specifications from TradingView. Although it does work with cryptocurrency pairs to an extent, it is meant only for equity stocks listed on TradingView.</p>
 <p>Providing a timeframe, indicator, exchange, or other options are all completely optional and you can call this command with just a market/TradingView pair and it will default to the other options to TradingView's chart defaults (such as one hour timeframe, no indicators, and so on).</p>
 + Tickers: Whatever tickers that TradingView supports.
 + Timeframes: 1m, 1, 3m, 3, 5m, 5, 15m, 15, 30m, 30, 1h, 60, 2h, 120, 3h, 180, 4h, 240, 1d, d, day, daily, 1w, w, week, weekly, 1mo, m, mo, month, monthly
