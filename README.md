@@ -9,12 +9,12 @@ This bot allows you to do the following:<br />
 4. Create, edit, and call a watchlist of stocks. Here, call means to check the prices of the stocks in the watchlist.<br />
 
 # Commands
-## Check Price
+## Check price
 #### Usage: `!price <tickers>`
 #### Example: `!price AMZN AAPL`
 Scrapes the price of the provided stock from Yahoo Finance.<p>
 
-## Get Charts
+## Get charts
 #### Usage: `!chart <TradingView ticker(s)> <timeframe> <indicators> <other options>`
 #### Example: `!chart amzn 5h rsi macd wide`
 <p>Gets charts with provided specifications from TradingView. Although it does work with cryptocurrency pair to an extent, it is meant only for equity stocks listed on TradingView.</p>
@@ -24,7 +24,7 @@ Scrapes the price of the provided stock from Yahoo Finance.<p>
 + Indicators: bb, bbr, bbw, crsi, ichi, ichimoku, macd, ma, ema, dema, tema, moonphase, pphl, pivotshl, rsi, stoch, stochrsi, williamr
 + Other Options: wide (widens the image to show more history), bera, blul (I won't tell you what these do, go ahead and try them yourself)<p>
 
-## Get News
+## Get news
 Scrapes news from TradingView.
 ### Get news from a few hours, days, weeks.... ago
 #### Usage: `!news <interval> <tickers>`
@@ -56,6 +56,12 @@ Removes tickers from a pre-existing watchlist (if they are present). <br />
 #### Usage: `!wlist call`
 Gets the price of all the tickers in the watchlist from Yahoo Finance.
 
-
-#Credits
+# How to run
+First, cd into the directory of the local repo and run the following command:<p>
+`pip install -r requirements.txt`<p>
+ Next, run the script:<p>
+ For Unix: `python3 main.py`<p>
+ For Windows: `python main.py`
+  
+# Credits
 This bot's source code has been inspired by that of <a href="https://github.com/EthyMoney/TsukiBot/tree/master">TsukiBot</a> (which is written in JavaScript), so I would like to thank its creator(s).
