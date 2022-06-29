@@ -1,10 +1,3 @@
-"""
-Things to implement:
-1. Provides user with the current price of a stock/crypto. (done)
-2. Provides user with a price history graph of the specified stock/crypto according to the specified scope. (done)
-3. Provides user with news related to the specified stock/crypto. (done)
-4. Pings user when the stock/crypto reaches a certain price (essentially a watchlist)."""
-
 import asyncio,io, os, platform, psycopg2, re, requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
