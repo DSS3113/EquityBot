@@ -1,1 +1,61 @@
 # EquityBot
+Welcome! EquityBot is a Discord bot written in Python for equity analysts and finance enthusiasts.
+
+# What does it do?
+This bot allows you to do the following:<br />
+1. Check the price of stocks real-time from Yahoo Finance by providing their symbols.<br />
+2. Get charts of stocks from TradingView with provided specifications.<br />
+3. Get news related to the provided stocks from TradingView in the specified interval.<br />
+4. Create, edit, and call a watchlist of stocks. Here, call means to check the prices of the stocks in the watchlist.<br />
+
+# Commands
+## Check Price
+#### Usage: `!price <tickers>`
+#### Example: `!price AMZN AAPL`
+Scrapes the price of the provided stock from Yahoo Finance.<p>
+
+## Get Charts
+#### Usage: `!chart <TradingView ticker(s)> <timeframe> <indicators> <other options>`
+#### Example: `!chart amzn 5h rsi macd wide`
+<p>Gets charts with provided specifications from TradingView. Although it does work with cryptocurrency pair to an extent, it is meant only for equity stocks listed on TradingView.</p>
+<p>Providing a timeframe, indicator, exchange, or other options are all completely optional and you can call this command with just a market/TradingView pair and it will default to the other options to TradingView's chart defaults (such as one hour timeframe, no indicators, and so on).</p>
++ Tickers: Whatever tickers that TradingView supports.
++ Timeframes: 1m, 1, 3m, 3, 5m, 5, 15m, 15, 30m, 30, 1h, 60, 2h, 120, 3h, 180, 4h, 240, 1d, d, day, daily, 1w, w, week, weekly, 1mo, m, mo, month, monthly
++ Indicators: bb, bbr, bbw, crsi, ichi, ichimoku, macd, ma, ema, dema, tema, moonphase, pphl, pivotshl, rsi, stoch, stochrsi, williamr
++ Other Options: wide (widens the image to show more history), bera, blul (I won't tell you what these do, go ahead and try them yourself)<p>
+
+## Get News
+Scrapes news from TradingView.
+### Get news from a few hours, days, weeks.... ago
+#### Usage: `!news <interval> <tickers>`
+#### Example: `!news 2w AAPL AMZN`
+For intervals, 'h' corresponds to hours, 'd' corresponds to days, 'w' corresponds to weeks, 'm' corresponds to months, and 'y' corresponds to years.
+### Get news from a particular date
+#### Usage: `!news <date> <tickers>`
+#### Example: `!news 2022-03-20 AAPL TSLA`
+The provided date must be in the format YYYY:MM:DD.
+### Get news between two dates (including first and excluding the second)
+#### Usage: `!news <date1> <date2> <tickers>`
+#### Example: `!news 2022-03-20 2022-03-24 AAPL`
+The provided dates must be in the format YYYY:MM:DD. Also, date1 must be that date which comes first chronologically.
+
+
+## Watchlist
+### Create a watchlist
+#### Usage: `!wlist new <tickers>`
+#### Example: `!wlist new AAPL AMZN`
+Creates a new watchlist or overwrites an existing one. <br />
+### Add ticker(s) to an existing watchlist
+#### Usage: `!wlist edit+ <tickers>`
+#### Example: `!wlist edit+ TSLA GOOGL`
+Adds tickers to a pre-existing watchlist (if they aren't already present). <br />
+### Remove ticker(s) from an existing watchlist
+#### Usage: `!wlist edit- <tickers>`
+#### Example: `!wlist edit- TSLA GOOGL`
+Removes tickers from a pre-existing watchlist (if they are present). <br />
+#### Usage: `!wlist call`
+Gets the price of all the tickers in the watchlist from Yahoo Finance.
+
+
+#Credits
+This bot's source code has been inspired by that of <a href="https://github.com/EthyMoney/TsukiBot/tree/master">TsukiBot</a> (which is written in JavaScript), so I would like to thank its creator(s).
