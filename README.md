@@ -29,15 +29,15 @@ Scrapes news from TradingView.
 ### Get news from a few hours, days, weeks.... ago
 #### Usage: `!news <interval> <tickers>`
 #### Example: `!news 2w AAPL AMZN`
-For intervals, 'h' corresponds to hours, 'd' corresponds to days, 'w' corresponds to weeks, 'm' corresponds to months, and 'y' corresponds to years.
+For intervals, `h` corresponds to hours, `d` corresponds to days, `w` corresponds to weeks, `m` corresponds to months, and `y` corresponds to years.
 ### Get news from a particular date
 #### Usage: `!news <date> <tickers>`
 #### Example: `!news 2022-03-20 AAPL TSLA`
-The provided date must be in the format YYYY:MM:DD.
+The provided date must be in the format `YYYY:MM:DD`.
 ### Get news between two dates (including first and excluding the second)
 #### Usage: `!news <date1> <date2> <tickers>`
 #### Example: `!news 2022-03-20 2022-03-24 AAPL`
-The provided dates must be in the format YYYY:MM:DD. Also, date1 must be that date which comes first chronologically.
+The provided dates must be in the format YYYY:MM:DD. Also, `date1` must be that date which comes first chronologically.
 
 
 ## Watchlist
@@ -57,9 +57,16 @@ Removes tickers from a pre-existing watchlist (if they are present). <br />
 Gets the price of all the tickers in the watchlist from Yahoo Finance.
 
 # How to run
-First, cd into the directory of the local repo and run the following command:<p>
+Create a `.env` file in the following format:<br/>
+```
+BOT_TOKEN="<Discord bot token>"
+DB_USER="<Database username>" 
+DB_PW="<Password for the entered database username>"
+```
+You would also need to create a Postgresql database by the name of `bot_db`.<p>
+Next, cd into the directory of the local repo and run the following command:<p>
 `pip install -r requirements.txt`<p>
- Next, run the script:<p>
+ Finally, run the script:<p>
  For Unix: `python3 main.py`<p>
  For Windows: `python main.py`
   
