@@ -269,7 +269,7 @@ There are three ways to use this command:
 @bot.command()
 async def news(ctx, *args):
     try:
-        interval_validation = re.match(r'\d[hdwmy]', args[0], re.I)
+        interval_validation = re.match(r'[\d]+[hdwmy]', args[0], re.I)
         if interval_validation:
             if len(args) < 2:
                 await ctx.reply('Insufficient number of arguments provided. Check `!help` to see how to use the news command.')
