@@ -56,6 +56,10 @@ Removes tickers from a pre-existing watchlist (if they are present). <br />
 #### Usage: `!wlist call`
 Gets the price of all the tickers in the watchlist from Yahoo Finance.
 
+## Help
+#### Usage: `!help`
+Returns a link to this README.md.
+
 # How to run
 Create a `.env` file in the following format:<br/>
 ```
