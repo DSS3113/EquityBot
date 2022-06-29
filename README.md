@@ -60,6 +60,9 @@ Gets the price of all the tickers in the watchlist from Yahoo Finance.
 #### Usage: `!help`
 Returns a link to this README.md.
 
+# Demonstration
+Have a look at <a href='https://github.com/DSS3113/EquityBot/tree/main/demo'>these pictures</a>.
+ 
 # How to run
 Create a `.env` file in the following format:<br/>
 ```
