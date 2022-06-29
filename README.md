@@ -74,7 +74,7 @@ Have a look at <a href='https://github.com/DSS3113/EquityBot/tree/main/demo'>the
  <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/9.jpg"></picture>
  
 # How to run
-Create a `.env` file in the following format:<br/>
+Create a `.env` file in the project's root directory in the following format:<br/>
 ```
 BOT_TOKEN="<Discord bot token>"
 DB_USER="<Database username>" 
