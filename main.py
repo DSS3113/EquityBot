@@ -726,6 +726,6 @@ async def wlist(ctx, *args):
 
 @bot.command()
 async def help(ctx, *args):
-    await ctx.reply("Here's a link to a document that lists every command and how to use it: https://github.com/DSS3113/EquityBot/blob/master/readme.md")
+    await ctx.reply("Here's a link to a document that lists every command and how to use it: https://github.com/DSS3113/EquityBot/blob/main/README.md")
 
 bot.run(os.getenv('BOT_TOKEN'))
