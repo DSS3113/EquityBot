@@ -62,6 +62,16 @@ Returns a link to this README.md.
 
 # Demonstration
 Have a look at <a href='https://github.com/DSS3113/EquityBot/tree/main/demo'>these pictures</a>.
+
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/1.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/2.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/3.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/4.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/5.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/6.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/7.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/8.jpg"></picture>
+ <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/9.jpg"></picture>
  
 # How to run
 Create a `.env` file in the following format:<br/>
