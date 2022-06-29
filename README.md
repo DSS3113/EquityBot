@@ -67,8 +67,8 @@ You would also need to create a Postgresql database by the name of `bot_db`.<p>
 Next, cd into the directory of the local repo and run the following command:<p>
 `pip install -r requirements.txt`<p>
  Finally, run the script:<p>
- For Unix: `python3 main.py`<p>
- For Windows: `python main.py`
+ For Unix:&nbsp;`python3 main.py`<p>
+ For Windows:&nbsp;`python main.py`
   
 # Credits
 This bot's source code has been inspired by that of <a href="https://github.com/EthyMoney/TsukiBot/tree/master">TsukiBot</a> (which is written in JavaScript), so I would like to thank its creator(s).
