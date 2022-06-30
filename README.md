@@ -16,7 +16,7 @@ Scrapes the price of the provided stock from Yahoo Finance.<p>
 
 ## Get charts
 #### Usage: `!chart <TradingView ticker(s)> <timeframe> <indicators> <other options>`
-#### Example: `!chart amzn 5h rsi macd wide`
+#### Example: `!chart AMZN 5h rsi macd wide`
 <p>Gets charts with provided specifications from TradingView. Although it does work with cryptocurrency pairs to an extent, it is meant only for equity stocks listed on TradingView.</p>
 <p>Providing a timeframe, indicator, exchange, or other options are all completely optional and you can call this command with just a market/TradingView pair and it will default to the other options to TradingView's chart defaults (such as one hour timeframe, no indicators, and so on).</p>
 + Tickers: Whatever tickers that TradingView supports.
@@ -86,6 +86,10 @@ Next, cd into the directory of the local repo and run the following command:<p>
  Finally, run the script:<p>
  For Unix:&nbsp;`python3 main.py`<p>
  For Windows:&nbsp;`python main.py`
-  
+ 
+# Future plans
++ Making the `!help` command return command documentation in the Discord channel itself instead of returning a link to this README.md file.
++ Breaking up the code into helper functions and different files to make it more loosely coupled.
+ 
 # Credits
 This bot's source code has been inspired by that of <a href="https://github.com/EthyMoney/TsukiBot/tree/master">TsukiBot</a> (which is written in JavaScript), so I would like to thank its creator(s).
