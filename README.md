@@ -26,7 +26,7 @@ Scrapes the price of the provided stock from Yahoo Finance.<p>
 
 ## Get news
 Scrapes news from TradingView.
-### Get news from a few hours, days, weeks.... ago
+### Get news from a specified number of hours, days, weeks, months, and years ago
 #### Usage: `!news <interval> <tickers>`
 #### Example: `!news 2w AAPL AMZN`
 For intervals, `h` corresponds to hours, `d` corresponds to days, `w` corresponds to weeks, `m` corresponds to months, and `y` corresponds to years.
