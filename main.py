@@ -1,4 +1,4 @@
-import asyncio,io, os, platform, psycopg2, re, requests
+import asyncio, io, os, platform, psycopg2, re, requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 from dateutil.relativedelta import relativedelta
