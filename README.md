@@ -92,4 +92,4 @@ Next, `cd` into the directory of the local repo and run the following command:<p
 + Breaking up the code into helper functions and different files to make it more loosely coupled.
  
 # Credits
-This bot's source code has been inspired by that of <a href="https://github.com/EthyMoney/TsukiBot/tree/master">TsukiBot</a> (which is written in JavaScript), so I would like to thank its creator(s).
+A part of this bot's source code (specifically, the charts function) has been inspired by that of <a href="https://github.com/EthyMoney/TsukiBot/tree/master">TsukiBot</a> (which is written in JavaScript), so I would like to thank its creator(s).
