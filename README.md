@@ -81,7 +81,7 @@ DB_USER="<Database username>"
 DB_PW="<Password for the entered database username>"
 ```
 You would also need to create a PostgreSQL database by the name of `bot_db`.<p>
-Next, cd into the directory of the local repo and run the following command:<p>
+Next, `cd` into the directory of the local repo and run the following command:<p>
 `pip install -r requirements.txt`<p>
  Finally, run the script:<p>
  For Unix:&nbsp;`python3 main.py`<p>
