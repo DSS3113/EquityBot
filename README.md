@@ -74,14 +74,14 @@ Have a look at <a href='https://github.com/DSS3113/EquityBot/tree/main/demo'>the
  <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/9.jpg"></picture>
  
 # How to run
-Create a `.env` file in the project's root directory in the following format:<br/>
+Firstly, make sure you have PostgreSQL 14.4+ and Python 3.10+ installed. Once that is done, create a PostgreSQL database by the name of `bot_db`.<p>
+Next, create a `.env` file in the project's root directory in the following format:<br/>
 ```
 BOT_TOKEN="<Discord bot token>"
 DB_USER="<Database username>" 
 DB_PW="<Password for the entered database username>"
 ```
-You would also need to create a PostgreSQL database by the name of `bot_db`.<p>
-Next, `cd` into the directory of the local repo and run the following command:<p>
+Next, `cd` into the root directory of the local repo and run the following command:<p>
 `pip install -r requirements.txt`<p>
  Finally, run the script:<p>
  For Unix:&nbsp;`python3 main.py`<p>
