@@ -19,10 +19,12 @@ Scrapes the price of the provided stock from Yahoo Finance.<p>
 #### Example: `!chart AMZN 5h rsi macd wide`
 <p>Gets charts with provided specifications from TradingView. Although it does work with cryptocurrency pairs to an extent, it is meant only for equity stocks listed on TradingView.</p>
 <p>Providing a timeframe, indicator, exchange, or other options are all completely optional and you can call this command with just a market/TradingView pair and it will default to the other options to TradingView's chart defaults (such as one hour timeframe, no indicators, and so on).</p>
-+ Tickers: Whatever tickers that TradingView supports.<br />
-+ Timeframes: 1m, 1, 3m, 3, 5m, 5, 15m, 15, 30m, 30, 1h, 60, 2h, 120, 3h, 180, 4h, 240, 1d, d, day, daily, 1w, w, week, weekly, 1mo, m, mo, month, monthly<br />
-+ Indicators: bb, bbr, bbw, crsi, ichi, ichimoku, macd, ma, ema, dema, tema, moonphase, pphl, pivotshl, rsi, stoch, stochrsi, williamr<br />
-+ Other Options: wide (widens the image to show more history), bera, blul (I won't tell you what these do, go ahead and try them yourself)<p>
+<ul>
+<li> Tickers: Whatever tickers that TradingView supports.<br />
+<li> Timeframes: 1m, 1, 3m, 3, 5m, 5, 15m, 15, 30m, 30, 1h, 60, 2h, 120, 3h, 180, 4h, 240, 1d, d, day, daily, 1w, w, week, weekly, 1mo, m, mo, month, monthly<br />
+<li> Indicators: bb, bbr, bbw, crsi, ichi, ichimoku, macd, ma, ema, dema, tema, moonphase, pphl, pivotshl, rsi, stoch, stochrsi, williamr<br />
+<li> Other Options: wide (widens the image to show more history), bera, blul (I won't tell you what these do, go ahead and try them yourself)<p>
+</ul>
 
 ## Get news
 Scrapes news from TradingView.
