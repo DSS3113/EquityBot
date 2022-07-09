@@ -75,7 +75,7 @@ Have a look at <a href='https://github.com/DSS3113/EquityBot/tree/main/demo'>the
  <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/8.jpg"></picture>
  <picture><img src="https://github.com/DSS3113/EquityBot/blob/main/demo/9.jpg"></picture>
  
-# How to run
+# How to run?
 Firstly, make sure you have PostgreSQL 14.4+ and Python 3.10+ installed. Once that is done, create a PostgreSQL database by the name of `bot_db`.<p>
 Next, create a `.env` file in the project's root directory in the following format:<br/>
 ```
